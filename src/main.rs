@@ -6,11 +6,7 @@ use std::{
 
 use base64::decode;
 use clap::{App, Arg};
-use ring::aead::{
-    AES_256_GCM,
-    LessSafeKey,
-    UnboundKey,
-};
+use pbkdf2::pbkdf2_simple;
 
 fn main() {
     let matches = App::new("Feather Password Manager")
@@ -43,10 +39,7 @@ fn main() {
     let service = matches.value_of("service");
     match read_to_string(file) {
         Ok(base64_data) => {
-            let cipher = Aes256::new_varkey(password.as_bytes()).unwrap();
-            let data = GenericArray::clone_from_slice(&decode(&base64_data).unwrap());
-            cipher.decrypt_blocks(&mut data);
-            let json = from_utf8(data.as_slice());
+            println!("{:?}", pbkdf2_simple(password, 1));
         },
         Err(e) => {
             eprintln!("Error opening file: {}", e);

@@ -9,4 +9,4 @@ edition = "2018"
 [dependencies]
 base64 = "0.10"
 clap = "2.33"
-ring = "0.16"
+pbkdf2 = "0.2"
